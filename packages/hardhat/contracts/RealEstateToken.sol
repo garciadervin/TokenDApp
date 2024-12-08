@@ -33,6 +33,10 @@ contract RealEstateToken is ERC20 {
         _mint(msg.sender, initialSupply);
     }
 
+    function mint(address to, uint256 amount) public {
+        _mint(to, amount);
+    }
+
     /**
      * @dev Función para registrar una nueva propiedad
      * @param valor Valor de la propiedad en wei

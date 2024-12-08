@@ -16,8 +16,32 @@ type HeaderMenuLink = {
 
 export const menuLinks: HeaderMenuLink[] = [
   {
-    label: "Home",
+    label: "Inicio",
     href: "/",
+  },
+
+  {
+    label: "Registrar y Tokenizar",
+    href: "/tokenizar",
+    icon: <BugAntIcon className="h-4 w-4" />,
+  },
+
+  {
+    label: "Transferir Tokens",
+    href: "/transferir-token",
+    icon: <BugAntIcon className="h-4 w-4" />,
+  },
+
+  {
+    label: "Buscar",
+    href: "/detalles-propiedad",
+    icon: <BugAntIcon className="h-4 w-4" />,
+  },
+
+  {
+    label: "Mintear Tokens",
+    href: "/mintear-tokens",
+    icon: <BugAntIcon className="h-4 w-4" />,
   },
 
   {
