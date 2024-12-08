@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";  // Importar el hook desde Scaffold-ETH
-import { useAccount, useBalance } from "wagmi";  // Importar hooks de wagmi
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth"; // Importar el hook desde Scaffold-ETH
+import { useAccount, useBalance } from "wagmi"; // Importar hooks de wagmi
 import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
 
-const TransferPropertyToken = () => {
-  const [recipientAddress, setRecipientAddress] = useState("");
-  const [tokenAmount, setTokenAmount] = useState("");
+const TransferPropertyToken: React.FC = () => {
+  const [recipientAddress, setRecipientAddress] = useState<string>("");
+  const [tokenAmount, setTokenAmount] = useState<string>("");
 
-  const { address } = useAccount();  // Obtener la dirección de la cuenta conectada
-  const { data: balance } = useBalance({ address });  // Obtener el balance de la cuenta conectada
+  const { address } = useAccount(); // Obtener la dirección de la cuenta conectada
+  const { data: balance } = useBalance({ address }); // Obtener el balance de la cuenta conectada
 
   const { writeContractAsync: transferirTokenPropiedad } = useScaffoldWriteContract("RealEstateToken");
 
@@ -22,8 +22,9 @@ const TransferPropertyToken = () => {
         args: [recipientAddress, BigInt(tokenAmount)],
       });
       alert("Tokens transferidos exitosamente!");
-    } catch (e) {
+    } catch (e: any) {
       console.error("Error transfiriendo los tokens:", e);
+      alert(`Error transfiriendo los tokens: ${e.message}`);
     }
   };
 
@@ -46,7 +47,7 @@ const TransferPropertyToken = () => {
               id="address"
               placeholder="Dirección de la cuenta"
               className="input input-bordered w-full"
-              value={address}
+              value={address ?? ""}
               readOnly
             />
           </div>
@@ -57,7 +58,7 @@ const TransferPropertyToken = () => {
               id="balance"
               placeholder="Balance de la cuenta"
               className="input input-bordered w-full"
-              value={balance?.formatted || ''}
+              value={balance?.formatted ?? ""}
               readOnly
             />
           </div>

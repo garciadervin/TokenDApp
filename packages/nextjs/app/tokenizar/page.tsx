@@ -1,17 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";  // Importar el hook desde Scaffold-ETH
-import { useAccount, useBalance } from "wagmi";  // Importar hooks de wagmi
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth"; // Importar el hook desde Scaffold-ETH
+import { useAccount, useBalance } from "wagmi"; // Importar hooks de wagmi
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
-const RegisterTokenizeProperty = () => {
-  const [propertyValue, setPropertyValue] = useState("");
-  const [propertyId, setPropertyId] = useState("");
-  const [tokenAmount, setTokenAmount] = useState("");
+const RegisterTokenizeProperty: React.FC = () => {
+  const [propertyValue, setPropertyValue] = useState<string>("");
+  const [propertyId, setPropertyId] = useState<string>("");
+  const [tokenAmount, setTokenAmount] = useState<string>("");
 
-  const { address } = useAccount();  // Obtener la dirección de la cuenta conectada
-  const { data: balance } = useBalance({ address });  // Obtener el balance de la cuenta conectada
+  const { address } = useAccount(); // Obtener la dirección de la cuenta conectada
+  const { data: balance } = useBalance({ address }); // Obtener el balance de la cuenta conectada
 
   const { writeContractAsync: registrarPropiedad } = useScaffoldWriteContract("RealEstateToken");
   const { writeContractAsync: tokenizarPropiedad } = useScaffoldWriteContract("RealEstateToken");
@@ -30,8 +30,9 @@ const RegisterTokenizeProperty = () => {
         args: [BigInt(propertyId), BigInt(tokenAmount)],
       });
       alert("¡Propiedad registrada y tokenizada exitosamente!");
-    } catch (e) {
+    } catch (e: any) {
       console.error("Error en el proceso:", e);
+      alert(`Error en el proceso: ${e.message}`);
     }
   };
 
@@ -54,7 +55,7 @@ const RegisterTokenizeProperty = () => {
               id="address"
               placeholder="Dirección de la cuenta"
               className="input input-bordered w-full"
-              value={address}
+              value={address ?? ""}
               readOnly
             />
           </div>
@@ -65,7 +66,7 @@ const RegisterTokenizeProperty = () => {
               id="balance"
               placeholder="Balance de la cuenta"
               className="input input-bordered w-full"
-              value={balance?.formatted || ''}
+              value={balance?.formatted ?? ""}
               readOnly
             />
           </div>

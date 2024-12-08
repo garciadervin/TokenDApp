@@ -5,9 +5,9 @@
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
-  31337: {
+  421614: {
     RealEstateToken: {
-      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      address: "0xC9B89682296A127d31399F53a8CBB5e9D68c5c12",
       abi: [
         {
           inputs: [

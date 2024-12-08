@@ -27,25 +27,21 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/",
     icon: <HomeIcon className="h-4 w-4" />,
   },
-
   {
     label: "Registrar y Tokenizar",
     href: "/tokenizar",
     icon: <CurrencyDollarIcon className="h-4 w-4" />,
   },
-
   {
     label: "Transferir Tokens",
     href: "/transferir-token",
     icon: <CurrencyDollarIcon className="h-4 w-4" />,
   },
-
   {
     label: "Buscar",
     href: "/detalles-propiedad",
     icon: <MagnifyingGlassIcon className="h-4 w-4" />,
   },
-
   {
     label: "Mintear Tokens",
     href: "/mintear-tokens",
@@ -53,7 +49,7 @@ export const menuLinks: HeaderMenuLink[] = [
   },
 ];
 
-export const HeaderMenuLinks = () => {
+export const HeaderMenuLinks: React.FC = () => {
   const pathname = usePathname();
 
   return (
@@ -82,7 +78,7 @@ export const HeaderMenuLinks = () => {
 /**
  * Site header
  */
-export const Header = () => {
+export const Header: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const burgerMenuRef = useRef<HTMLDivElement>(null);
   useOutsideClick(
@@ -97,9 +93,7 @@ export const Header = () => {
           <label
             tabIndex={0}
             className={`ml-1 btn btn-ghost ${isDrawerOpen ? "hover:bg-secondary" : "hover:bg-transparent"}`}
-            onClick={() => {
-              setIsDrawerOpen(prevIsOpenState => !prevIsOpenState);
-            }}
+            onClick={() => setIsDrawerOpen((prevIsOpenState) => !prevIsOpenState)}
           >
             <Bars3Icon className="h-1/2" />
           </label>
@@ -107,9 +101,7 @@ export const Header = () => {
             <ul
               tabIndex={0}
               className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-              onClick={() => {
-                setIsDrawerOpen(false);
-              }}
+              onClick={() => setIsDrawerOpen(false)}
             >
               <HeaderMenuLinks />
             </ul>

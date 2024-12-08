@@ -1,47 +1,53 @@
 "use client";
 
 import { useState } from "react";
-import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";  // Importar el hook desde Scaffold-ETH
-import { useAccount, useBalance } from "wagmi";  // Importar hooks de wagmi
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth"; // Importar el hook desde Scaffold-ETH
+import { useAccount, useBalance } from "wagmi"; // Importar hooks de wagmi
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
-const PropertyDetails = () => {
-  const [searchType, setSearchType] = useState("id"); // Tipo de búsqueda (id, propietario, valor)
-  const [propertyId, setPropertyId] = useState("0");
-  const [ownerAddress, setOwnerAddress] = useState("");
-  const [propertyValue, setPropertyValue] = useState("");
+const PropertyDetails: React.FC = () => {
+  const [searchType, setSearchType] = useState<string>("id");
+  const [propertyId, setPropertyId] = useState<string>("0");
+  const [ownerAddress, setOwnerAddress] = useState<string>("");
+  const [propertyValue, setPropertyValue] = useState<string>("0");
   const [searchId, setSearchId] = useState<string | null>(null);
   const [searchOwner, setSearchOwner] = useState<string | null>(null);
   const [searchValue, setSearchValue] = useState<string | null>(null);
 
-  const { address } = useAccount();  // Obtener la dirección de la cuenta conectada
-  const { data: balance } = useBalance({ address });  // Obtener el balance de la cuenta conectada
+  const { address } = useAccount(); // Obtener la dirección de la cuenta conectada
+  const { data: balance } = useBalance({ address }); // Obtener el balance de la cuenta conectada
 
   const { data: propiedad, isLoading, error } = useScaffoldReadContract({
     contractName: "RealEstateToken",
     functionName: "obtenerDetallesPropiedad",
-    args: [BigInt(searchId || "0")],  // Asegúrate de proporcionar el argumento requerido siempre
+    args: [BigInt(searchId ?? "0")], // Asegúrate de proporcionar el argumento requerido siempre
   });
 
   const { data: propiedadesPorPropietario } = useScaffoldReadContract({
     contractName: "RealEstateToken",
     functionName: "consultarPropiedadesPorPropietario",
-    args: [searchOwner || ""],
+    args: [searchOwner ?? ""],
   });
 
   const { data: propiedadesPorValor } = useScaffoldReadContract({
     contractName: "RealEstateToken",
     functionName: "consultarPropiedadesPorValor",
-    args: [BigInt(searchValue || "0")],
+    args: [BigInt(searchValue ?? "0")],
   });
 
   const handleSearch = () => {
     if (searchType === "id") {
       setSearchId(propertyId);
+      setSearchOwner(null);
+      setSearchValue(null);
     } else if (searchType === "propietario") {
       setSearchOwner(ownerAddress);
+      setSearchId(null);
+      setSearchValue(null);
     } else if (searchType === "valor") {
       setSearchValue(propertyValue);
+      setSearchId(null);
+      setSearchOwner(null);
     }
   };
 
@@ -49,7 +55,7 @@ const PropertyDetails = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   // Desempaquetamos la tupla devuelta por el contrato, con valores por defecto
-  const [valor = BigInt(0), tokens = BigInt(0), propietario = "", tokenizada = false] = propiedad || [];
+  const [valor = BigInt(0), tokens = BigInt(0), propietario = "", tokenizada = false] = propiedad ?? [];
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -149,12 +155,12 @@ const PropertyDetails = () => {
                   <td className="border px-4 py-2">{tokenizada ? 'Tokenizada' : 'No Tokenizada'}</td>
                 </tr>
               )}
-              {searchType === "propietario" && propiedadesPorPropietario && propiedadesPorPropietario.map((id) => (
+              {searchType === "propietario" && propiedadesPorPropietario && propiedadesPorPropietario.map((id: bigint) => (
                 <tr key={id.toString()}>
                   <td className="border px-4 py-2">{id.toString()}</td>
                 </tr>
               ))}
-              {searchType === "valor" && propiedadesPorValor && propiedadesPorValor.map((id) => (
+              {searchType === "valor" && propiedadesPorValor && propiedadesPorValor.map((id: bigint) => (
                 <tr key={id.toString()}>
                   <td className="border px-4 py-2">{id.toString()}</td>
                 </tr>
