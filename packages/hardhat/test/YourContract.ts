@@ -1,20 +1,19 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-describe("RealEstateContracts", function () {
+describe("RealEstateToken Contract", function () {
   let token: any;
-  let assetManager: any;
+  let owner: any;
+  let addr1: any;
+  let addr2: any;
 
   before(async () => {
-    const [owner] = await ethers.getSigners();
+    [owner, addr1, addr2] = await ethers.getSigners();
 
     // Desplegar el contrato RealEstateToken
     const TokenFactory = await ethers.getContractFactory("RealEstateToken");
     token = await TokenFactory.deploy("1000000000000000000000000");
-
-    // Desplegar el contrato RealEstateAssetManager con la dirección del token
-    const AssetManagerFactory = await ethers.getContractFactory("RealEstateAssetManager");
-    assetManager = await AssetManagerFactory.deploy(token.address);
+    await token.deployed();
   });
 
   describe("Deployment", function () {
@@ -23,32 +22,44 @@ describe("RealEstateContracts", function () {
       expect(totalSupply.toString()).to.equal("1000000000000000000000000");
     });
 
-    it("Debe asignar el token correctamente al gestor de activos", async function () {
-      const tokenAddress = await assetManager.token();
-      expect(tokenAddress).to.equal(token.address);
+    it("Debe asignar el suministro inicial al deployer", async function () {
+      const deployerBalance = await token.balanceOf(owner.address);
+      expect(deployerBalance.toString()).to.equal("1000000000000000000000000");
     });
   });
 
-  describe("Gestión de Activos", function () {
-    it("Debe permitir agregar un nuevo activo", async function () {
-      const [owner] = await ethers.getSigners();
-      await token.approve(assetManager.address, "1000000000000000000");
-
-      await assetManager.agregarActivo("Edificio A", "1000000000000000000");
-      const asset = await assetManager.activos(0);
-
-      expect(asset.nombre).to.equal("Edificio A");
-      expect(asset.valor.toString()).to.equal("1000000000000000000");
-      expect(asset.propietario).to.equal(owner.address);
+  describe("Registro y tokenización de propiedades", function () {
+    it("Debe permitir registrar una nueva propiedad", async function () {
+      const valor = "100000000000000000000"; // 100 ETH en wei
+      await token.registrarPropiedad(valor);
+      const propiedad = await token.obtenerDetallesPropiedad(0);
+      expect(propiedad.valor.toString()).to.equal(valor);
+      expect(propiedad.propietario).to.equal(owner.address);
     });
 
-    it("Debe permitir transferir un activo a un nuevo propietario", async function () {
-      const [owner, newOwner] = await ethers.getSigners();
+    it("Debe permitir tokenizar una propiedad registrada", async function () {
+      await token.tokenizarPropiedad(0, 10000);  // Tokenizamos con 10000 tokens
+      const propiedad = await token.obtenerDetallesPropiedad(0);
+      expect(propiedad.tokens.toString()).to.equal("10000");
+      expect(propiedad.tokenizada).to.equal(true);
+    });
+  });
 
-      await assetManager.transferirActivo(0, newOwner.address);
-      const asset = await assetManager.activos(0);
+  describe("Transferencias de tokens de propiedad", function () {
+    it("Debe permitir transferir tokens de propiedad", async function () {
+      await token.transferirTokenPropiedad(addr1.address, 1000);  // Transferimos 1000 tokens a addr1
+      const balanceAddr1 = await token.balanceOf(addr1.address);
+      expect(balanceAddr1.toString()).to.equal("1000");
+    });
 
-      expect(asset.propietario).to.equal(newOwner.address);
+    it("Debe revertir si la cantidad de tokens no es múltiplo de TAMANO_TOKEN", async function () {
+      await expect(token.transferirTokenPropiedad(addr1.address, 999)).to.be.revertedWith("Cantidad no válida");
+    });
+
+    it("Debe permitir transferir tokens de propiedad a un nuevo propietario", async function () {
+      await token.transferirTokenPropiedad(addr2.address, 1000);  // Transferimos 1000 tokens a addr2
+      const balanceAddr2 = await token.balanceOf(addr2.address);
+      expect(balanceAddr2.toString()).to.equal("1000");
     });
   });
 });

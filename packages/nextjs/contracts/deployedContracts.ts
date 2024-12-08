@@ -6,101 +6,6 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   31337: {
-    RealEstateAssetManager: {
-      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      abi: [
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "tokenAddress",
-              type: "address",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "constructor",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "activos",
-          outputs: [
-            {
-              internalType: "string",
-              name: "nombre",
-              type: "string",
-            },
-            {
-              internalType: "uint256",
-              name: "valor",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "propietario",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "nombre",
-              type: "string",
-            },
-            {
-              internalType: "uint256",
-              name: "valor",
-              type: "uint256",
-            },
-          ],
-          name: "agregarActivo",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "token",
-          outputs: [
-            {
-              internalType: "contract RealEstateToken",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "idActivo",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "nuevoPropietario",
-              type: "address",
-            },
-          ],
-          name: "transferirActivo",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-      ],
-      inheritedFunctions: {},
-    },
     RealEstateToken: {
       address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       abi: [
@@ -231,6 +136,50 @@ const deployedContracts = {
           inputs: [
             {
               indexed: true,
+              internalType: "uint256",
+              name: "idPropiedad",
+              type: "uint256",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "propietario",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "valor",
+              type: "uint256",
+            },
+          ],
+          name: "PropiedadRegistrada",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "uint256",
+              name: "idPropiedad",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "tokens",
+              type: "uint256",
+            },
+          ],
+          name: "PropiedadTokenizada",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
               internalType: "address",
               name: "from",
               type: "address",
@@ -250,6 +199,19 @@ const deployedContracts = {
           ],
           name: "Transfer",
           type: "event",
+        },
+        {
+          inputs: [],
+          name: "TAMANO_TOKEN",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
         },
         {
           inputs: [
@@ -319,6 +281,57 @@ const deployedContracts = {
           type: "function",
         },
         {
+          inputs: [
+            {
+              internalType: "address",
+              name: "propietario",
+              type: "address",
+            },
+          ],
+          name: "consultarPropiedadesPorPropietario",
+          outputs: [
+            {
+              internalType: "uint256[]",
+              name: "",
+              type: "uint256[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "valor",
+              type: "uint256",
+            },
+          ],
+          name: "consultarPropiedadesPorValor",
+          outputs: [
+            {
+              internalType: "uint256[]",
+              name: "",
+              type: "uint256[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "contadorPropiedades",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
           inputs: [],
           name: "decimals",
           outputs: [
@@ -345,6 +358,87 @@ const deployedContracts = {
           type: "function",
         },
         {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "idPropiedad",
+              type: "uint256",
+            },
+          ],
+          name: "obtenerDetallesPropiedad",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "propiedades",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "valor",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "tokens",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "propietario",
+              type: "address",
+            },
+            {
+              internalType: "bool",
+              name: "tokenizada",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "valor",
+              type: "uint256",
+            },
+          ],
+          name: "registrarPropiedad",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
           inputs: [],
           name: "symbol",
           outputs: [
@@ -355,6 +449,24 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "idPropiedad",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "tokens",
+              type: "uint256",
+            },
+          ],
+          name: "tokenizarPropiedad",
+          outputs: [],
+          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -420,6 +532,24 @@ const deployedContracts = {
               type: "bool",
             },
           ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "to",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "cantidad",
+              type: "uint256",
+            },
+          ],
+          name: "transferirTokenPropiedad",
+          outputs: [],
           stateMutability: "nonpayable",
           type: "function",
         },
