@@ -3,58 +3,63 @@
 import { useAccount } from "wagmi";
 import { Address, Balance } from "~~/components/scaffold-eth";
 import type { NextPage } from "next";
-import Link from "next/link";
-import { BuildingOfficeIcon, CurrencyDollarIcon } from "@heroicons/react/24/outline";
+import { PlusCircleIcon, CurrencyDollarIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
 
 const Home: NextPage = () => {
   // Obtiene la dirección conectada del usuario
   const { address: connectedAddress } = useAccount();
 
   return (
-    <div className="flex flex-col items-center flex-grow pt-10">
-      <div className="px-5">
-        {/* Encabezado */}
-        <h1 className="text-center">
-          <span className="block text-2xl mb-2">Bienvenido a</span>
-          <span className="block text-4xl font-bold">Gestión de Activos Inmobiliarios</span>
+    <div className="flex flex-col items-center justify-center flex-grow pt-16 bg-white px-16">
+      <div className="text-center mb-10">
+        {/* Encabezado de la página */}
+        <h1 className="text-5xl font-extrabold mb-2 text-gray-900">
+          Gestión de Activos Inmobiliarios
         </h1>
+        <h2 className="text-2xl mb-4 text-gray-800">
+          Bienvenido a nuestra plataforma
+        </h2>
 
-        {/* Dirección conectada */}
-        <div className="flex flex-col sm:flex-row justify-center items-center space-x-2">
-          <p className="my-2 font-medium">Dirección conectada:</p>
-          <Address address={connectedAddress} />
-        </div>
-
-        {/* Saldo */}
-        <div className="text-center">
-          <p className="my-2 font-medium">Saldo de Tokens RET:</p>
-          <Balance address={connectedAddress} />
+        {/* Información de la dirección conectada */}
+        <div className="flex flex-col sm:flex-row justify-center items-center space-x-2 mb-4">
+          <p className="text-lg font-medium text-gray-600">Dirección conectada:</p>
+          <div className="px-4 py-2 border rounded-full text-lg font-mono text-gray-800 shadow-sm">
+            <Address address={connectedAddress} />
+          </div>
+          <p className="text-lg font-medium text-gray-600 ml-4">Saldo de Tokens RET:</p>
+          <div className="px-4 py-2 bg-white border border-gray-300 rounded-full text-lg font-mono font-bold text-gray-800 shadow-sm">
+            <Balance address={connectedAddress} />
+          </div>
         </div>
       </div>
 
+      {/* División */}
+      <div className="border-t border-gray-200 w-full mt-2 mb-2" />
+
+      {/* Título de las Opciones Disponibles */}
+      <h3 className="text-xl font-semibold text-center text-gray-700 py-1 mb-0.5">
+        Opciones Disponibles
+      </h3>
+
       {/* Opciones principales */}
-      <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-12">
-          {/* Gestión de Activos */}
-          <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-            <BuildingOfficeIcon className="h-8 w-8 fill-secondary" />
-            <p>
-              Administra tus activos inmobiliarios{" "}
-              <Link href="/assets" passHref className="link">
-                aquí
-              </Link>.
-            </p>
+      <div className="flex-grow bg-white w-full px-12 py-8 rounded-lg shadow-md">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+          {/* Opción: Registrar y Tokenizar Propiedad */}
+          <div className="flex flex-col bg-white px-8 py-10 text-center items-center rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-200">
+            <PlusCircleIcon className="h-10 w-10 text-blue-500 mb-4" />
+            <p className="text-lg font-semibold text-gray-700">Registrar y Tokenizar Propiedad</p>
           </div>
 
-          {/* Explorador de Bloques */}
-          <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-            <CurrencyDollarIcon className="h-8 w-8 fill-secondary" />
-            <p>
-              Revisa tus transacciones en el{" "}
-              <Link href="/blockexplorer" passHref className="link">
-                Explorador de Bloques
-              </Link>.
-            </p>
+          {/* Opción: Transferir Token Propiedad */}
+          <div className="flex flex-col bg-white px-8 py-10 text-center items-center rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-200">
+            <CurrencyDollarIcon className="h-10 w-10 text-green-500 mb-4" />
+            <p className="text-lg font-semibold text-gray-700">Transferir Token Propiedad</p>
+          </div>
+
+          {/* Opción: Obtener y Consultar Detalles Propiedad */}
+          <div className="flex flex-col bg-white px-8 py-10 text-center items-center rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-200">
+            <InformationCircleIcon className="h-10 w-10 text-purple-500 mb-4" />
+            <p className="text-lg font-semibold text-gray-700">Obtener y Consultar Detalles Propiedad</p>
           </div>
         </div>
       </div>
