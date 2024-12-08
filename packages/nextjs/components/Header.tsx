@@ -4,7 +4,14 @@ import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  HomeIcon,
+  CurrencyDollarIcon,
+  MagnifyingGlassIcon,
+  PlusCircleIcon,
+  BugAntIcon,
+} from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
@@ -18,36 +25,31 @@ export const menuLinks: HeaderMenuLink[] = [
   {
     label: "Inicio",
     href: "/",
+    icon: <HomeIcon className="h-4 w-4" />,
   },
 
   {
     label: "Registrar y Tokenizar",
     href: "/tokenizar",
-    icon: <BugAntIcon className="h-4 w-4" />,
+    icon: <CurrencyDollarIcon className="h-4 w-4" />,
   },
 
   {
     label: "Transferir Tokens",
     href: "/transferir-token",
-    icon: <BugAntIcon className="h-4 w-4" />,
+    icon: <CurrencyDollarIcon className="h-4 w-4" />,
   },
 
   {
     label: "Buscar",
     href: "/detalles-propiedad",
-    icon: <BugAntIcon className="h-4 w-4" />,
+    icon: <MagnifyingGlassIcon className="h-4 w-4" />,
   },
 
   {
     label: "Mintear Tokens",
     href: "/mintear-tokens",
-    icon: <BugAntIcon className="h-4 w-4" />,
-  },
-
-  {
-    label: "Debug Contracts",
-    href: "/debug",
-    icon: <BugAntIcon className="h-4 w-4" />,
+    icon: <PlusCircleIcon className="h-4 w-4" />,
   },
 ];
 
@@ -115,11 +117,11 @@ export const Header = () => {
         </div>
         <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
           <div className="flex relative w-10 h-10">
-            <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
+            <Image alt="RealEstate Token logo" className="cursor-pointer" fill src="/nuevo-logo.svg" />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-ETH</span>
-            <span className="text-xs">Ethereum dev stack</span>
+            <span className="font-bold leading-tight">RealEstate Token</span>
+            <span className="text-xs">Crypto Coders</span>
           </div>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
