@@ -11,6 +11,7 @@ import {
   MagnifyingGlassIcon,
   PlusCircleIcon,
   BugAntIcon,
+  ArrowRightIcon,
 } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
@@ -35,7 +36,7 @@ export const menuLinks: HeaderMenuLink[] = [
   {
     label: "Transferir Tokens",
     href: "/transferir-token",
-    icon: <CurrencyDollarIcon className="h-4 w-4" />,
+    icon: <ArrowRightIcon className="h-4 w-4" />,
   },
   {
     label: "Buscar",

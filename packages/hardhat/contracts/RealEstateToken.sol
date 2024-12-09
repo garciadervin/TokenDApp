@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
  * @dev Contrato para tokenizar propiedades inmobiliarias utilizando ERC20
  */
 contract RealEstateToken is ERC20 {
+    address public owner;
 
     // Estructura que representa una propiedad
     struct Propiedad {
@@ -20,8 +21,6 @@ contract RealEstateToken is ERC20 {
     uint256 public contadorPropiedades; // Contador de propiedades registradas
     mapping(uint256 => Propiedad) public propiedades; // Mapeo de ID de propiedad a Propiedad
 
-    uint256 public constant TAMANO_TOKEN = 1000; // Tamaño de un token en relación a la propiedad (1 token representa 0.1%)
-
     event PropiedadRegistrada(uint256 indexed idPropiedad, address indexed propietario, uint256 valor);
     event PropiedadTokenizada(uint256 indexed idPropiedad, uint256 tokens);
 
@@ -31,9 +30,15 @@ contract RealEstateToken is ERC20 {
      */
     constructor(uint256 initialSupply) ERC20("Real Estate Token", "RET") {
         _mint(msg.sender, initialSupply);
+        owner = msg.sender;
     }
 
-    function mint(address to, uint256 amount) public {
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only the owner can mint tokens");
+        _;
+    }
+        
+    function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
     }
 
@@ -57,14 +62,14 @@ contract RealEstateToken is ERC20 {
     /**
      * @dev Función para tokenizar una propiedad registrada
      * @param idPropiedad ID de la propiedad a tokenizar
-     * @param tokens Cantidad de tokens a asignar a la propiedad
      */
-    function tokenizarPropiedad(uint256 idPropiedad, uint256 tokens) external {
-        require(tokens > 0 && tokens % TAMANO_TOKEN == 0, "Tokens invalidos");
-
+    function tokenizarPropiedad(uint256 idPropiedad) external {
         Propiedad storage propiedad = propiedades[idPropiedad];
         require(!propiedad.tokenizada, "Propiedad ya tokenizada");
+        require(propiedad.propietario == msg.sender, "Solo el propietario puede tokenizar la propiedad");
 
+        // La cantidad de tokens asignados es igual al valor de la propiedad en wei
+        uint256 tokens = propiedad.valor;
         propiedad.tokens = tokens;
         propiedad.tokenizada = true;
         _mint(propiedad.propietario, tokens);
@@ -79,7 +84,6 @@ contract RealEstateToken is ERC20 {
      */
     function transferirTokenPropiedad(address to, uint256 cantidad) external {
         require(to != address(0) && balanceOf(msg.sender) >= cantidad, "Transferencia invalida");
-        require(cantidad % TAMANO_TOKEN == 0, "Cantidad no valida");
 
         _transfer(msg.sender, to, cantidad);
     }

@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   421614: {
     RealEstateToken: {
-      address: "0xC9B89682296A127d31399F53a8CBB5e9D68c5c12",
+      address: "0x3d55926078F13aF1186C476520104881088F0E13",
       abi: [
         {
           inputs: [
@@ -199,19 +199,6 @@ const deployedContracts = {
           ],
           name: "Transfer",
           type: "event",
-        },
-        {
-          inputs: [],
-          name: "TAMANO_TOKEN",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
         },
         {
           inputs: [
@@ -410,6 +397,19 @@ const deployedContracts = {
           type: "function",
         },
         {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
           inputs: [
             {
               internalType: "uint256",
@@ -474,11 +474,6 @@ const deployedContracts = {
             {
               internalType: "uint256",
               name: "idPropiedad",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "tokens",
               type: "uint256",
             },
           ],

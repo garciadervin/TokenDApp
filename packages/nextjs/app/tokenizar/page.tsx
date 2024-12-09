@@ -8,31 +8,28 @@ import { PlusCircleIcon } from "@heroicons/react/24/outline";
 const RegisterTokenizeProperty: React.FC = () => {
   const [propertyValue, setPropertyValue] = useState<string>("");
   const [propertyId, setPropertyId] = useState<string>("");
-  const [tokenAmount, setTokenAmount] = useState<string>("");
 
   const { address } = useAccount(); // Obtener la dirección de la cuenta conectada
   const { data: balance } = useBalance({ address }); // Obtener el balance de la cuenta conectada
 
-  const { writeContractAsync: registrarPropiedad } = useScaffoldWriteContract("RealEstateToken");
-  const { writeContractAsync: tokenizarPropiedad } = useScaffoldWriteContract("RealEstateToken");
+  const { writeContractAsync } = useScaffoldWriteContract("RealEstateToken");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       // Registrar propiedad
-      await registrarPropiedad({
+      await writeContractAsync({
         functionName: "registrarPropiedad",
         args: [BigInt(propertyValue)],
       });
+
       // Tokenizar propiedad
-      await tokenizarPropiedad({
+      await writeContractAsync({
         functionName: "tokenizarPropiedad",
-        args: [BigInt(propertyId), BigInt(tokenAmount)],
+        args: [BigInt(propertyId)],
       });
-      alert("¡Propiedad registrada y tokenizada exitosamente!");
     } catch (e: any) {
       console.error("Error en el proceso:", e);
-      alert(`Error en el proceso: ${e.message}`);
     }
   };
 
@@ -90,17 +87,6 @@ const RegisterTokenizeProperty: React.FC = () => {
               className="input input-bordered w-full"
               value={propertyId}
               onChange={(e) => setPropertyId(e.target.value)}
-            />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="tokenAmount" className="text-gray-600">Cantidad de Tokens</label>
-            <input
-              type="text"
-              id="tokenAmount"
-              placeholder="Cantidad de Tokens"
-              className="input input-bordered w-full"
-              value={tokenAmount}
-              onChange={(e) => setTokenAmount(e.target.value)}
             />
           </div>
           <button

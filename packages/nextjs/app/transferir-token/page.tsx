@@ -21,10 +21,8 @@ const TransferPropertyToken: React.FC = () => {
         functionName: "transferirTokenPropiedad",
         args: [recipientAddress, BigInt(tokenAmount)],
       });
-      alert("Tokens transferidos exitosamente!");
     } catch (e: any) {
       console.error("Error transfiriendo los tokens:", e);
-      alert(`Error transfiriendo los tokens: ${e.message}`);
     }
   };
 
@@ -49,6 +47,7 @@ const TransferPropertyToken: React.FC = () => {
               className="input input-bordered w-full"
               value={address ?? ""}
               readOnly
+              required
             />
           </div>
           <div className="flex flex-col">
@@ -60,6 +59,7 @@ const TransferPropertyToken: React.FC = () => {
               className="input input-bordered w-full"
               value={balance?.formatted ?? ""}
               readOnly
+              required
             />
           </div>
           <div className="flex flex-col">
@@ -71,6 +71,7 @@ const TransferPropertyToken: React.FC = () => {
               className="input input-bordered w-full"
               value={recipientAddress}
               onChange={(e) => setRecipientAddress(e.target.value)}
+              required
             />
           </div>
           <div className="flex flex-col">
@@ -82,6 +83,7 @@ const TransferPropertyToken: React.FC = () => {
               className="input input-bordered w-full"
               value={tokenAmount}
               onChange={(e) => setTokenAmount(e.target.value)}
+              required
             />
           </div>
           <button

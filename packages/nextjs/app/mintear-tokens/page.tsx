@@ -29,10 +29,8 @@ const MintTokens: NextPage = () => {
         functionName: "mint",
         args: [recipientAddress, tokens],
       });
-      alert("¡Tokens minteados exitosamente!");
     } catch (e: any) {
       console.error("Error minteando los tokens:", e);
-      alert(`Error minteando los tokens: ${e.message}`);
     }
   };
 
